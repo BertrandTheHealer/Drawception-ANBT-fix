@@ -1,3 +1,11 @@
+1.148.2018.12
+- Fix the "hide topic" button
+- CSS modifications: better dark "create" page & fixed header to the top
+
+1.147.2018.12
+- Fix for the new canvas
+- Little forgetfulness...
+
 1.146.2018.12
 - Rewrite of the script (it no longer uses JQuery)
 - Add support for the new palette: Holiday

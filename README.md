@@ -24,11 +24,11 @@ A userscript to make Drawception.com better: more drawing tools, tablet support,
 - Mobile browsers / other / single use:
   - create a bookmark with the following URL:
 
-    `javascript:void($.ajax({dataType:"script",cache:!0,url:"//rawgit.com/grompe/Drawception-ANBT/master/drawception-anbt.user.js"}))`
+    `javascript:void($.ajax({dataType:"script",cache:!0,url:"//rawgit.com/grompe/Drawception-ANBT/master/drawception-anbt.user.js"}))` (doesn't work for the moment)
     
     and follow it while being on drawception.com site; if that doesn't work, try pasting it in the address bar.
 
-After installing script management add-on, just click on the [**Direct script link**](https://raw.github.com/grompe/Drawception-ANBT/master/drawception-anbt.user.js).
+After installing script management add-on, just click on the [**Direct script link**](https://raw.github.com/EnderDragonneau/Drawception-ANBT-fix/master/drawception-anbt.user.js).
 
 
 ## FEATURES
