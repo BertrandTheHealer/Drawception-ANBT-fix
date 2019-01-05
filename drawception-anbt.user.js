@@ -48,7 +48,8 @@ const wrapped = () => {
     forumHiddenUsers: '',
     maxCommentHeight: 1000,
     useOldFont: true,
-    useOldFontSize: true
+    useOldFontSize: true,
+    colorizeNavBar: true
   }
 
   /*
@@ -2050,7 +2051,7 @@ const wrapped = () => {
       //["pressureExponent", "number", "Pressure exponent (smaller = softer tablet response, bigger = sharper)"],
     ])
     addGroup('Play (most settings are for the new canvas only)', [['newCanvas', 'boolean', 'New drawing canvas (also allows <a href="http://grompe.org.ru/replayable-drawception/">watching playback</a>)'], ['submitConfirm', 'boolean', 'Confirm submitting if more than a minute is left'], ['smoothening', 'boolean', 'Smoothing of strokes'], ['hideCross', 'boolean', 'Hide the cross when drawing'], ['enterToCaption', 'boolean', 'Submit captions (and start games) by pressing Enter'], ['backup', 'boolean', 'Save the drawing in case of error and restore it in sandbox'], ['timeoutSound', 'boolean', 'Warning sound when only a minute is left (normal games)'], ['timeoutSoundBlitz', 'boolean', 'Warning sound when only 5 seconds left (blitz)'], ['timeoutSoundVolume', 'number', 'Volume of the warning sound, in %'], ['rememberPosition', 'boolean', 'Show your panel position and track changes in unfinished games list'], ['colorNumberShortcuts', 'boolean', 'Use 0-9 keys to select the color'], ['colorUnderCursorHint', 'boolean', 'Show the color under the cursor in the palette'], ['colorDoublePress', 'boolean', 'Double press 0-9 keys to select color without pressing shift'], ['bookmarkOwnCaptions', 'boolean', 'Automatically bookmark your own captions in case of dustcatchers']])
-    addGroup('Miscellaneous', [['localeTimestamp', 'boolean', `Format timestamps as your system locale (${new Date().toLocaleString()})`], ['proxyImgur', 'boolean', 'Replace imgur.com links to filmot.com to load, in case your ISP blocks them'], ['ajaxRetry', 'boolean', 'Retry failed AJAX requests'], ['autoplay', 'boolean', 'Automatically start replay when watching playback'], ['autoBypassNSFW', 'boolean', 'Automatically bypass NSFW game warning'], ['markStalePosts', 'boolean', 'Mark stale forum posts'], ['maxCommentHeight', 'number', 'Maximum comments and posts height until directly linked (px, 0 = no limit)'], ['useOldFont', 'boolean', 'Use old Nunito font (which is usually bolder and less wiggly)'], ['useOldFontSize', 'boolean', 'Use old, smaller font size']])
+    addGroup('Miscellaneous', [['localeTimestamp', 'boolean', `Format timestamps as your system locale (${new Date().toLocaleString()})`], ['proxyImgur', 'boolean', 'Replace imgur.com links to filmot.com to load, in case your ISP blocks them'], ['ajaxRetry', 'boolean', 'Retry failed AJAX requests'], ['autoplay', 'boolean', 'Automatically start replay when watching playback'], ['autoBypassNSFW', 'boolean', 'Automatically bypass NSFW game warning'], ['markStalePosts', 'boolean', 'Mark stale forum posts'], ['maxCommentHeight', 'number', 'Maximum comments and posts height until directly linked (px, 0 = no limit)'], ['useOldFont', 'boolean', 'Use old Nunito font (which is usually bolder and less wiggly)'], ['useOldFontSize', 'boolean', 'Use old, smaller font size'], ["colorizeNavBar", "boolean", "Change top bar color based on panel colors"]])
     addGroup('Advanced', [['newCanvasCSS', 'longstr', 'Custom CSS for new canvas (experimental, <a href="https://github.com/grompe/Drawception-ANBT/tree/master/newcanvas_styles">get styles here</a>)'], ['forumHiddenUsers', 'longstr', 'Comma-separated list of user IDs whose forum posts are hidden']])
     $('<br><div class="control-group"><div class="controls"><input name="submit" type="submit" class="btn btn-primary" value="Apply"> <b id="anbtSettingsOK" class="label label-theme_holiday" style="display:none">Saved!</b></div></div>').forEach(x => theForm.appendChild(x))
     $('#main').insertAdjacentHTML('afterbegin', theForm.outerHTML)
@@ -2311,6 +2312,127 @@ const wrapped = () => {
             notificationsOpened = true
           }
         }
+      }
+    }
+
+    // change navbar color
+    if (options.colorizeNavBar) {
+      // on settings or player profile page, use average color of avatar
+      if (window.location.href.includes('/settings/') || window.location.href.includes('/player/')) {
+        $("#nav-drag").style.background = "url("+document.getElementsByClassName("profile-avatar")[0].src+")";
+        $("#nav-drag").style.backgroundSize = ".5px .5px";
+        $("#nav-drag").style.backgroundRepeat = "repeat";
+      }
+      // on game pages
+      if (window.location.href.includes('/game/')) {
+        // default to using average panel color
+        let theme = "";
+        // get number of pills
+        switch (document.getElementsByClassName("label-big").length) {
+          case 1:// game is either top or themed
+            // will be either theme text or empty
+            theme = document.getElementsByClassName("label-big")[0].firstChild.innerHTML;
+            break;
+          case 2:// game is top and themed, get theme
+            theme = document.getElementsByClassName("label-big")[1].firstChild.innerHTML;
+            break;
+          default:// game is neither top nor themed, use avg panel color
+        }
+        //apply color
+        switch(theme) {
+          case "b &amp; w":
+            navbarColor = "#000000";
+            break;
+          case "gameboy":
+            navbarColor = "#9BBC0F";
+            break;
+          case "neon":
+            navbarColor = "#00ABFF";
+            break;
+          case "coty 2016":
+            navbarColor = "#648589";
+            break;
+          case "coty 2017":
+            navbarColor = "#5F7278";
+            break;
+          case "cga":
+            navbarColor = "#FFFF55";
+            break;
+          case "grayscale":
+            navbarColor = "#333333";
+            break;
+          case "grimby grays":
+            navbarColor = "#333333";
+            break;
+          case "juice":
+            navbarColor = "#F3AB54";
+            break;
+          case "tropical":
+            navbarColor = "#F68357";
+            break;
+          case "fire &amp; ice":
+            navbarColor = "#FD2119";
+            break;
+          case "canyon sunset":
+            navbarColor = "#2E1B50";
+            break;
+          case "fury road":
+            navbarColor = "#893f1d";
+            break;
+          case "bee":
+            navbarColor = "#EAB618";
+            break;
+          case "beach":
+            navbarColor = "#F7DCA2";
+            break;
+          case "candy":
+            navbarColor = "#793ABD";
+            break;
+          case "sepia":
+            navbarColor = "#402305";
+            break;
+          case "spring":
+            navbarColor = "#9ED396";
+            break;
+          case "tide pool":
+            navbarColor = "#FAD489";
+            break;
+          case "holiday":
+            navbarColor = "#3D9949";
+            break;
+          case "valentines":
+            navbarColor = "#FFCCDF";
+            break;
+          case "thanksgiving":
+            navbarColor = "#F5E9CE";
+            break;
+          case "halloween":
+            navbarColor = "#BEF202";
+            break;
+          case "the blues":
+            navbarColor = "#295C6F";
+            break;
+          default:
+            // use average color of first drawing
+            navbarColor = "";
+            //if the first panel is a drawing, set navbar color to average color
+            if (document.getElementsByClassName("gamepanel")[0].firstChild.src !== 'undefined') {
+              $("#nav-drag").style.background = "url("+document.getElementsByClassName("gamepanel")[0].firstChild.src+")";
+            }
+            //if the second panel is a drawing, set navbar color to average color
+            if (document.getElementsByClassName("gamepanel")[1].firstChild.src !== 'undefined') {
+              $("#nav-drag").style.background = "url("+document.getElementsByClassName("gamepanel")[1].firstChild.src+")";
+            }
+            $("#nav-drag").style.backgroundSize = ".5px .5px";
+            $("#nav-drag").style.backgroundRepeat = "repeat";
+        }
+        $("#nav-drag").style.backgroundColor = navbarColor;//set color
+      }
+      // on drawing pages use average color of drawing
+      if (window.location.href.includes('/panel/drawing/')) {
+        $("#nav-drag").style.background = "url("+document.getElementsByClassName("gamepanel")[0].firstChild.src+")";
+        $("#nav-drag").style.backgroundSize = ".5px .5px";
+        $("#nav-drag").style.backgroundRepeat = "repeat";
       }
     }
 
